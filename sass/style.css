@@ -23,8 +23,8 @@ body {
   bottom: 50px;
   right: 50px;
   background-color: #ffffff;
-  height: 500px;
-  width: 400px;
+  height: 580px;
+  width: 440px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
@@ -105,33 +105,84 @@ body {
   flex-direction: column;
 }
 
-.main-chat {
-  height: 100%;
-  position: relative;
+.footer-container {
+  position: absolute;
+  bottom: 20px;
+  left: 3%;
+  width: 94%;
 }
 
 .footer {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  width: 100%;
+  position: relative;
 }
 
-.footer input {
+#message {
   border: 1px solid rgb(224, 224, 224);
-  padding: 14px;
+  padding: 16px;
   border-radius: 30px;
-  width: 82%;
+  width: 100%;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.footer-btns {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: flex;
+  gap: 4px;
+  margin-left: 10px;
+}
+
+.footer-icon-btn {
+  background-color: #fff;
+  border: 0;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, fill 0.3s;
+}
+
+.footer-icon-btn:hover {
+  background-color: rgba(63, 81, 181, 0.1490196078);
+}
+
+.hidden {
+  display: none;
+}
+
+textarea:focus {
+  transition: 0.5s;
+  outline: 1px solid #3f51b5;
+}
+
+#message:not(:-moz-placeholder-shown) + .footer-btns .upload-btn {
+  display: flex;
+  background-color: #3f51b5;
+}
+
+#message:not(:placeholder-shown) + .footer-btns .upload-btn {
+  display: flex;
+  background-color: #3f51b5;
+}
+#message:not(:-moz-placeholder-shown) + .footer-btns .upload-btn svg path {
+  fill: #ffffff;
+}
+#message:not(:placeholder-shown) + .footer-btns .upload-btn svg path {
+  fill: #ffffff;
 }
 
 .loader {
   display: flex;
-  gap: 5px;
+  gap: 4px;
 }
 
 .loader .dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background-color: #3f51b5;
   animation: dotSwing 1.2s ease-in-out infinite;
@@ -157,5 +208,19 @@ body {
   50% {
     transform: translateY(-5px);
     opacity: 1;
+  }
+}
+@media screen and (max-width: 544px) {
+  .main-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+    top: 0;
+    left: 0;
+  }
+  .header {
+    border-radius: 0;
   }
 }/*# sourceMappingURL=style.css.map */
