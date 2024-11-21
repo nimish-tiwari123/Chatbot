@@ -39,7 +39,6 @@
             </div>
             <h1 class="heading-text">Chatbot</h1>
           </div>
-          <img src="./assets/down.svg" alt="down" class="cursor-pointer" />
         </div>
         <div class="main">
           <div class="main-ai-chat">
@@ -88,6 +87,7 @@
             <div class="footer-btns">
               <button class="footer-icon-btn smile-btn">
                 <svg
+                  id="emoji-picker"
                   width="20"
                   height="20"
                   viewBox="0 0 24 24"
@@ -112,6 +112,16 @@
               </button>
               <div class="file-input-wrapper">
                 <input type="file" accept="images/*" id="file-input" hidden />
+                <img src="#" />
+                <button class="footer-icon-btn lock-btn" id="file-cancel">
+                  <span class="cancel">
+                    <img
+                      src="./assets/cross.svg"
+                      alt="cancel"
+                      class="cancel-img"
+                    />
+                  </span>
+                </button>
                 <button class="footer-icon-btn lock-btn" id="file-upload">
                   <svg
                     width="20"
@@ -150,6 +160,7 @@
         </div>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

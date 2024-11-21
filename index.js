@@ -2,32 +2,39 @@ const chatBody = document.querySelector(".my-chat-container");
 const inputMessage = document.querySelector("#message");
 const sendMessageButton = document.querySelector(".upload-btn");
 const fileInput = document.querySelector("#file-input");
+const fileCancel = document.querySelector("#file-cancel");
+const fileUploadWrapper = document.querySelector(".file-input-wrapper");
 
 const API_KEY = "AIzaSyCooo66D1AVtAPJ2wum3Jg299jvz1EswNg";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 const userData = {
   message: null,
-  file :{
+  file: {
     data: null,
-    mime_type: null
-  }
+    mime_type: null,
+  },
 };
+const chatHistory = [];
 
+// Gemini Response 
 const generateBotResponse = async (incomingMessageDiv) => {
   const messageElement = incomingMessageDiv.querySelector(
     ".ai-chat-container2"
   );
+  chatHistory.push({
+    role: "user",
+    parts: [
+      { text: userData.message },
+      ...(userData.file.data ? [{ inline_data: userData.file }] : []),
+    ],
+  });
   const requestOptions = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      contents: [
-        {
-          parts: [{ text: userData.message }, ...(userData.file.data ? [{inline_data:userData.file}]: [])],
-        },
-      ],
+      contents: chatHistory,
     }),
   };
   try {
@@ -39,14 +46,20 @@ const generateBotResponse = async (incomingMessageDiv) => {
       .replace(/\*\*(.*?)\*\*/g, "$1")
       .trim();
     messageElement.innerText = responseText;
+    chatHistory.push({
+      role: "model",
+      parts: [{ text: userData.message }],
+    });
   } catch (err) {
-    console.log(err);
     messageElement.innerText = err.message;
     messageElement.style.color = "#ff0000";
   } finally {
+    userData.file = {};
     chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
   }
 };
+
+// Message container created for my chat
 const createMessageDiv = (userContent, classes) => {
   const div = document.createElement("div");
   div.classList.add("my-chat", classes);
@@ -54,18 +67,23 @@ const createMessageDiv = (userContent, classes) => {
   return div;
 };
 
+// handle my messages
 const handleOutgoingMessage = (e) => {
   e.preventDefault();
   userData.message = inputMessage.value.trim();
   inputMessage.value = "";
+  fileUploadWrapper.classList.remove("file-uploaded");
 
   const userContent = `<div class="file-flex">
   <span class="my-chat-text"></span>
-  ${userData.file.data? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="attachment"/>`: ""}
+  ${
+    userData.file.data
+      ? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="attachment"/>`
+      : ""
+  }
   </div>`;
   const outgoingMessageDiv = createMessageDiv(userContent, "my-chat");
-  outgoingMessageDiv.querySelector(".my-chat-text").textContent =
-    userData.message;
+  outgoingMessageDiv.querySelector(".my-chat-text").textContent = userData.message;
   chatBody.appendChild(outgoingMessageDiv);
   chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
   setTimeout(() => {
@@ -102,7 +120,6 @@ const handleOutgoingMessage = (e) => {
     const incomingMessageDiv = createMessageDiv(userContent, "main-ai-chat");
     chatBody.appendChild(incomingMessageDiv);
     chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
-
     generateBotResponse(incomingMessageDiv);
   }, 600);
 };
@@ -114,27 +131,53 @@ inputMessage.addEventListener("keydown", (e) => {
     handleOutgoingMessage(e);
   }
 });
-
 sendMessageButton.addEventListener("click", (e) => handleOutgoingMessage(e));
 
+// For Image Selection
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (!file) return;
 
   const reader = new FileReader();
-  
   reader.onload = (e) => {
+    fileUploadWrapper.querySelector("img").src = e.target.result;
+    fileUploadWrapper.classList.add("file-uploaded");
     const base64String = e.target.result.split(",")[1];
     userData.file = {
       data: base64String,
-      mime_type: file.type
-    }
+      mime_type: file.type,
+    };
     fileInput.value = "";
   };
-
   reader.readAsDataURL(file);
 });
 
+fileCancel.addEventListener("click", () => {
+  userData.file = {};
+  fileUploadWrapper.classList.remove("file-uploaded");
+});
+
+// For Emojis
+const picker = new EmojiMart.Picker({
+  theme: "light",
+  skinTonePosition: "none",
+  previewPosition: "none",
+  onEmojiSelect: (emoji) => {
+    const { selectionStart: start, selectionEnd: end } = inputMessage;
+    inputMessage.setRangeText(emoji.native, start, end, "end");
+    inputMessage.focus();
+  },
+  onClickOutside: (e) => {
+    console.log(e.target);
+    if (e.target.id === "emoji-picker") {
+      document.body.classList.toggle("show-emoji-picker");
+    } else {
+      document.body.classList.remove("show-emoji-picker");
+    }
+  },
+});
+
+document.querySelector(".footer-btns").appendChild(picker);
 document.querySelector("#file-upload").addEventListener("click", () => {
   fileInput.click();
 });
