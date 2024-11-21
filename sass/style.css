@@ -23,16 +23,16 @@ body {
   bottom: 50px;
   right: 50px;
   background-color: #ffffff;
-  height: 580px;
+  height: 600px;
   width: 440px;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 
 .header {
   justify-content: space-between;
   background-color: #3f51b5;
-  border-radius: 10px 10px 0 0;
+  border-radius: 20px 20px 0 0;
   color: #ffffff;
   padding: 12px;
 }
@@ -67,6 +67,8 @@ body {
 
 .main {
   padding: 20px;
+  height: 440px;
+  overflow: auto;
 }
 
 .my-chat {
@@ -79,6 +81,7 @@ body {
   border-radius: 12px 12px 2px 12px;
   padding: 12px;
   font-size: 15px;
+  max-width: 80%;
 }
 
 .ai-chat-container {
@@ -89,11 +92,10 @@ body {
 .main-ai-chat {
   gap: 14px;
   flex-direction: column;
-  margin-top: 26px;
 }
 
 .ai-chat-container2 {
-  background-color: rgba(63, 81, 181, 0.1490196078);
+  background-color: rgba(63, 81, 181, 0.0941176471);
   padding: 12px;
   font-size: 15px;
   border-radius: 12px 12px 12px 2px;
@@ -107,7 +109,7 @@ body {
 
 .footer-container {
   position: absolute;
-  bottom: 20px;
+  bottom: 15px;
   left: 3%;
   width: 94%;
 }
@@ -147,7 +149,7 @@ body {
 }
 
 .footer-icon-btn:hover {
-  background-color: rgba(63, 81, 181, 0.1490196078);
+  background-color: rgba(63, 81, 181, 0.0941176471);
 }
 
 .hidden {
@@ -184,7 +186,7 @@ textarea:focus {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #3f51b5;
+  background-color: rgba(63, 81, 181, 0.7725490196);
   animation: dotSwing 1.2s ease-in-out infinite;
 }
 
@@ -206,7 +208,7 @@ textarea:focus {
     opacity: 0;
   }
   50% {
-    transform: translateY(-5px);
+    transform: translateY(-1px);
     opacity: 1;
   }
 }
@@ -223,4 +225,20 @@ textarea:focus {
   .header {
     border-radius: 0;
   }
+  .main {
+    height: 80vh;
+  }
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(63, 81, 181, 0.0941176471);
+  border-radius: 4px;
 }/*# sourceMappingURL=style.css.map */
