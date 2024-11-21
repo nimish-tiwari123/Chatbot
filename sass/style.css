@@ -75,6 +75,15 @@ body {
   justify-content: right;
 }
 
+.file-flex {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  gap: 16px;
+}
+
 .my-chat-text {
   background-color: #3f51b5;
   color: #ffffff;
@@ -82,6 +91,12 @@ body {
   padding: 12px;
   font-size: 15px;
   max-width: 80%;
+}
+
+.attachment {
+  width: 80%;
+  border-radius: 14px;
+  border: 1px solid rgba(128, 128, 128, 0.099);
 }
 
 .ai-chat-container {
@@ -95,7 +110,7 @@ body {
 }
 
 .ai-chat-container2 {
-  background-color: rgba(63, 81, 181, 0.0941176471);
+  background-color: rgba(63, 81, 181, 0.0705882353);
   padding: 12px;
   font-size: 15px;
   border-radius: 12px 12px 12px 2px;
@@ -149,7 +164,7 @@ body {
 }
 
 .footer-icon-btn:hover {
-  background-color: rgba(63, 81, 181, 0.0941176471);
+  background-color: rgba(63, 81, 181, 0.0705882353);
 }
 
 .hidden {
@@ -239,6 +254,6 @@ textarea:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(63, 81, 181, 0.0941176471);
+  background-color: rgba(63, 81, 181, 0.0705882353);
   border-radius: 4px;
 }/*# sourceMappingURL=style.css.map */

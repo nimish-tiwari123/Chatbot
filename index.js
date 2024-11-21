@@ -1,11 +1,16 @@
 const chatBody = document.querySelector(".my-chat-container");
 const inputMessage = document.querySelector("#message");
 const sendMessageButton = document.querySelector(".upload-btn");
+const fileInput = document.querySelector("#file-input");
 
 const API_KEY = "AIzaSyCooo66D1AVtAPJ2wum3Jg299jvz1EswNg";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 const userData = {
   message: null,
+  file :{
+    data: null,
+    mime_type: null
+  }
 };
 
 const generateBotResponse = async (incomingMessageDiv) => {
@@ -20,7 +25,7 @@ const generateBotResponse = async (incomingMessageDiv) => {
     body: JSON.stringify({
       contents: [
         {
-          parts: [{ text: userData.message }],
+          parts: [{ text: userData.message }, ...(userData.file.data ? [{inline_data:userData.file}]: [])],
         },
       ],
     }),
@@ -54,7 +59,10 @@ const handleOutgoingMessage = (e) => {
   userData.message = inputMessage.value.trim();
   inputMessage.value = "";
 
-  const userContent = `<span class="my-chat-text"></span>`;
+  const userContent = `<div class="file-flex">
+  <span class="my-chat-text"></span>
+  ${userData.file.data? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="attachment"/>`: ""}
+  </div>`;
   const outgoingMessageDiv = createMessageDiv(userContent, "my-chat");
   outgoingMessageDiv.querySelector(".my-chat-text").textContent =
     userData.message;
@@ -108,3 +116,25 @@ inputMessage.addEventListener("keydown", (e) => {
 });
 
 sendMessageButton.addEventListener("click", (e) => handleOutgoingMessage(e));
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  
+  reader.onload = (e) => {
+    const base64String = e.target.result.split(",")[1];
+    userData.file = {
+      data: base64String,
+      mime_type: file.type
+    }
+    fileInput.value = "";
+  };
+
+  reader.readAsDataURL(file);
+});
+
+document.querySelector("#file-upload").addEventListener("click", () => {
+  fileInput.click();
+});
